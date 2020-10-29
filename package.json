@@ -1,0 +1,24 @@
+{
+  "name": "ecommerce_app",
+  "version": "0.0.1",
+  "description": "MERN stack ecommerce app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuliuszG/MERN-Ecommerce.git"
+  },
+  "keywords": [
+    "ecommerce",
+    "app",
+    "mern"
+  ],
+  "author": "Juliusz Góral",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JuliuszG/MERN-Ecommerce/issues"
+  },
+  "homepage": "https://github.com/JuliuszG/MERN-Ecommerce#readme"
+}
