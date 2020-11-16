@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
 }
 
 exports.deleteCategory = (req, res) => {
-    const category = req.profile
+    const category = req.category
     category.remove(err => {
         if(err) res.status(400).json({ response: "Nie udało się usunąć kategorii" })
         res.status(200).json({ response: "Kategoria została usunięta" })
@@ -24,7 +24,7 @@ exports.deleteCategory = (req, res) => {
 }
 
 exports.updateCategory = (req, res) => {
-    let category = req.profile
+    let category = req.category
     category = _.extend(category, req.body)
     category.save((err) => {
         if(err){
@@ -41,7 +41,7 @@ exports.findCategoryById = async (req, res, next, id) => {
         const category = await Category.findById(id)
         if(!category) res.status(400).json({ response: "Nie znaleziono takiej kategorii" })
         else{
-            req.profile = category
+            req.category = category
             next()
         }    
       } catch (error) {
@@ -50,7 +50,7 @@ exports.findCategoryById = async (req, res, next, id) => {
 }
 
 exports.getCategoryById = (req, res) => {
-    res.status(200).json(req.profile)
+    res.status(200).json(req.category)
 }
 
 exports.getAll = async (req, res) => {

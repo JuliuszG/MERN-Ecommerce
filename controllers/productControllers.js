@@ -33,7 +33,7 @@ exports.productById = async (req, res, next, id) => {
     const product = await Product.findById(id)
     if(!product) res.status(400).json({ response: "Nie znaleziono takiego produktu" })
     else{
-        req.profile = product
+        req.product = product
         next()
     }
   } catch (error) {
@@ -42,12 +42,12 @@ exports.productById = async (req, res, next, id) => {
 }
 
 exports.getProduct = (req, res) => {
-    req.profile.photo = undefined
-    res.status(200).json(req.profile)
+    req.product.photo = undefined
+    res.status(200).json(req.product)
 }
 
 exports.deleteProduct = (req, res) => {
-    const product = req.profile
+    const product = req.product
     product.remove(err => {
         if(err) res.status(400).json({ response: "Nie udało się usunąć produktu" })
         res.status(200).json({ response: "Produkt został usunięty" })
@@ -59,7 +59,7 @@ exports.updateProduct = (req, res) => {
     form.keepExtensions = true
     form.parse(req, (err, fields, files) => {
         if (err) res.status(400).json({ response: "Błąd podczas wrzucania pliku" })
-            let product = req.profile
+            let product = req.product
             product = _.extend(product, fields)
             if(files.photo){
                 if(files.photo.size > 1000000) {
@@ -102,7 +102,7 @@ exports.productQuery = (req, res) => {
 }
 
 exports.getRelated = (req, res) => {
-    const originalProduct = req.profile
+    const originalProduct = req.product
     let limit = req.query.limit ? parseInt(req.query.limit) : 6
     Product.find({ _id: { $ne: originalProduct }, category: originalProduct.category })
     .select("-photo")
@@ -128,7 +128,7 @@ exports.getProductCategories = (req, res) => {
     })
 }
 
-exports.getProductsBySearch = (req, res) => {
+exports.getProductsBySearch = async (req, res) => {
     let order = req.body.order ? req.body.order : "desc";
     let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
     let limit = req.body.limit ? parseInt(req.body.limit) : 100;
@@ -147,7 +147,9 @@ exports.getProductsBySearch = (req, res) => {
             }
         }
     }
- 
+    const count = await Product.countDocuments({
+        ...findArgs
+     });
     Product.find(findArgs)
         .select("-photo")
         .populate("category")
@@ -161,14 +163,14 @@ exports.getProductsBySearch = (req, res) => {
                 });
             }
             res.json({
-                size: data.length,
+                size: count,
                 data
             });
         });
 }
 
 exports.getPhoto = (req, res, next) => {
-    const product = req.profile
+    const product = req.product
     if(product.photo.data) {
         res.set('Content-Type', product.photo.contentType)
         return res.send(product.photo.data)

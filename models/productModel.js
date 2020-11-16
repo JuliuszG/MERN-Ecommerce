@@ -27,6 +27,7 @@ const productSchema = new Schema({
         required: [true, "Produkt musi należeć do istniejącej kategorii"]
     },
     quantity: {
+        required: [true, "Musisz podać ilość towaru w magazynie"],
         type: Number,     
     },
     sold: {

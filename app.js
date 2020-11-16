@@ -48,6 +48,6 @@ app.use('/api/category', categoryRoutes)
 const productRoutes = require('./routes/productRoutes')
 app.use('/api/product', productRoutes)
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8080
 
 app.listen(port, () => console.log(`Server is running on port ${port}`))

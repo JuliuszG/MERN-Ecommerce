@@ -9,8 +9,8 @@ router.get('/get/:userId', exactIdRoute, adminRoute, (req, res) => {
     })
 })
 
-router.route('/profile/:userId').get(exactIdRoute, getProfile)
-router.route('/profile/:userId').put(exactIdRoute, updateProfile)
+router.route('/profile/:userId').get(protectedRoute, exactIdRoute, getProfile)
+router.route('/profile/:userId').put(protectedRoute, exactIdRoute, updateProfile)
 
 
 router.param('userId', userById)
